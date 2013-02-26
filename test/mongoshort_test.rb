@@ -146,7 +146,7 @@ class UrlTest < Test::Unit::TestCase
     assert_equal "Not found in database", last_response.body
   end
 
-  def test_info_should_show_doesnt_exist
+  def test_info_should_show_information
     get '/info/612c1'
     assert_includes last_response.body, "Viewed: "
   end
