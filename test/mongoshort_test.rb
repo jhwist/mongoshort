@@ -51,10 +51,10 @@ class UrlTest < Test::Unit::TestCase
   end
   
   def test_key_should_update_the_last_access_date
-    Timecop.freeze do
+    Timecop.freeze(Time.local(1990)) do
       get '/83802'
       url = URL.find_by_url_key('83802')
-      assert_equal Time.now, url.last_accessed
+      assert_equal Time.local(1990), url.last_accessed
     end
   end
   
@@ -87,7 +87,7 @@ class UrlTest < Test::Unit::TestCase
   def test_new_content_type_should_be_json
     set_authorization!
     post '/new'
-    assert_equal "application/json", last_response.headers["Content-Type"]
+    assert_equal "application/json;charset=utf-8", last_response.headers["Content-Type"]
   end
   
   def test_new_should_return_status_400_if_params_are_missing
