@@ -150,4 +150,9 @@ class UrlTest < Test::Unit::TestCase
     get '/info/612c1'
     assert_includes last_response.body, "Viewed: "
   end
+
+  def test_info_all
+    get '/info/all'
+    assert_includes last_response.body, "Count: #{URL.count}"
+  end
 end

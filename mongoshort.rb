@@ -24,6 +24,10 @@ configure :production do
 end
 
 helpers do
+  def display_(url)
+    "<p>Short: #{url.short_url}}, Long: #{url.full_url}, Viewed: #{url.times_viewed}</p>"
+  end
+
   # Does a few checks for HTTP Basic Authentication.
   def protected!
     auth = Rack::Auth::Basic::Request.new(request.env)
@@ -64,13 +68,22 @@ get '/:url' do
   end
 end
 
+get '/info/all' do
+  content_type :html
+  content = "Count: #{URL.count()}</br>"
+  URL.all(:order => :times_viewed.desc).each do |url|
+    content << display_(url)
+  end
+  return content
+end
+
 get '/info/:url' do
   content_type :html
   url = URL.find_by_url_key(params[:url])
   if url.nil?
     "Not found in database"
   else
-    "Short: #{params[:url]}, Long: #{url.full_url}, Viewed: #{url.times_viewed}"
+    display_(url)
   end
 end
 
