@@ -16,11 +16,12 @@ configure :test do
 end
 
 configure :production do
-  # If using a database outside of where MongoShort is running (like MongoHQ - http://www.mongohq.com/), specify the connection here.
-  MongoMapper.connection = Mongo::Connection.new('mongo.host.com', 27017)
-  
-  # Only necessary if your database needs authentication (strongly recommended in production).
-  # MongoMapper.database.authenticate(ENV['mongodb_user'], ENV['mongodb_pass'])
+  if ENV['MONGOHQ_URL']
+    uri = URI.parse(ENV['MONGOHQ_URL'])
+    MongoMapper.connection = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
+    MongoMapper.database = uri.path.gsub(/^\//, '')
+    puts ">> db is #{uri.path.gsub(/^\//, '')}"
+  end
 end
 
 helpers do
