@@ -5,7 +5,7 @@ require 'digest/md5'
 require './models/url'
 
 # If using Basic Authentication, please change the default passwords!
-CREDENTIALS = [ENV[MSHORT_USER], ENV[MSHORT_PASS]]
+CREDENTIALS = [ENV['MSHORT_USER'], ENV['MSHORT_PASS']]
 
 configure :development do
   MongoMapper.database = 'mongoshort_dev'
