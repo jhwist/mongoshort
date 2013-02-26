@@ -5,7 +5,7 @@ require 'digest/md5'
 require './models/url'
 
 # If using Basic Authentication, please change the default passwords!
-CREDENTIALS = ['mongoshort', 'mongoshort']
+CREDENTIALS = [ENV['MSHORT_USER'], ENV['MSHORT_PASS']]
 
 configure :development do
   MongoMapper.database = 'mongoshort_dev'
@@ -20,7 +20,6 @@ configure :production do
     uri = URI.parse(ENV['MONGOHQ_URL'])
     MongoMapper.connection = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
     MongoMapper.database = uri.path.gsub(/^\//, '')
-    puts ">> db is #{uri.path.gsub(/^\//, '')}"
   end
 end
 
