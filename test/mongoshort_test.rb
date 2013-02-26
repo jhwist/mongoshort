@@ -140,4 +140,14 @@ class UrlTest < Test::Unit::TestCase
     assert_equal new_url.short_url, response_hash["short_url"]
     assert_equal 'http://www.amazon.com', response_hash["full_url"]
   end
+
+  def test_info_should_show_doesnt_exist
+    get '/info/4711'
+    assert_equal "Not found in database", last_response.body
+  end
+
+  def test_info_should_show_doesnt_exist
+    get '/info/612c1'
+    assert_includes last_response.body, "Viewed: "
+  end
 end

@@ -64,6 +64,16 @@ get '/:url' do
   end
 end
 
+get '/info/:url' do
+  content_type :html
+  url = URL.find_by_url_key(params[:url])
+  if url.nil?
+    "Not found in database"
+  else
+    "Short: #{params[:url]}, Long: #{url.full_url}, Viewed: #{url.times_viewed}"
+  end
+end
+
 post '/new' do
   protected!
   content_type :json
