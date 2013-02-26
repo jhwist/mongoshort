@@ -1,3 +1,4 @@
+require 'sinatra'
 require 'mongo_mapper'
 require 'uri'
 require 'digest/md5'
@@ -16,8 +17,7 @@ end
 
 configure :production do
   # If using a database outside of where MongoShort is running (like MongoHQ - http://www.mongohq.com/), specify the connection here.
-  # MongoMapper.connection = Mongo::Connection.new('mongo.host.com', 27017)
-  MongoMapper.database = 'mongoshort'
+  MongoMapper.connection = Mongo::Connection.new('mongo.host.com', 27017)
   
   # Only necessary if your database needs authentication (strongly recommended in production).
   # MongoMapper.database.authenticate(ENV['mongodb_user'], ENV['mongodb_pass'])
@@ -49,8 +49,7 @@ helpers do
 end
 
 get '/' do
-  # You can set up an index page (under the /public directory).
-  "MongoShort"
+  send_file File.join(settings.public_folder, 'index.html')
 end
 
 get '/:url' do
@@ -74,7 +73,7 @@ post '/new' do
     return { :error => "'url' parameter is missing" }.to_json
   end
   
-  url = URL.find_or_create(params[:url])
+  url = URL.find_or_create(params[:url], params[:vanity])
   return url.to_json
 end
 

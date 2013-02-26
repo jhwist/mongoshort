@@ -5,12 +5,16 @@ class URL
   key :full_url, String, :required => true
   key :last_accessed, Time
   key :times_viewed, Integer, :default => 0
-  
+
   # Tip for URL validation taken from http://mbleigh.com/2009/02/18/quick-tip-rails-url-validation.html
   validates_format_of :full_url, :with => URI::regexp(%w(http https))
 
-  def self.find_or_create(new_url)
-    url_key = Digest::MD5.hexdigest(new_url)[0..4]
+  def self.find_or_create(new_url, vanity_url = nil)
+    if not vanity_url.nil? and not vanity_url.empty?
+      url_key = vanity_url
+    else
+      url_key = Digest::MD5.hexdigest(new_url)[0..4]
+    end
     begin
       # Check if the key exists, so we don't have to create the URL again.
       url = self.find_by_url_key(url_key)

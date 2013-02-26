@@ -117,6 +117,13 @@ class UrlTest < Test::Unit::TestCase
     post '/new', { :url => 'http://www.google.com' }
     assert_equal url_count + 1, URL.count
   end
+
+  def test_new_should_create_vanity_url
+    set_authorization!
+    post '/new', { :url => 'http://www.twitter.com', :vanity => 'twt' }
+    new_url = URL.find_by_full_url('http://www.twitter.com')
+    assert_equal "twt", new_url.url_key
+  end
   
   def test_new_should_not_create_a_new_record_if_url_already_exists
     set_authorization!
