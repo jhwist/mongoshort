@@ -1,5 +1,6 @@
 source :rubygems
 
+ruby '1.9.3'
 gem "sinatra", "1.3.5"
 gem "bson", "1.5.0"
 gem "bson_ext", "1.5.0"
